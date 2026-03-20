@@ -9,7 +9,7 @@ router= APIRouter()
 
 
 @router.post("/")
-def crear_producto(producto_in: ProductoCreate, producto_service: ProductoService = Depends(get_producto_services)):
+def crear_producto(producto_in: ProductoCreate, producto_service: ProductoService = Depends(get_producto_services), admin: ProductoService = Depends(get_current_admin)):
     producto= producto_service.create_producto(producto_in)
     return {"MENSAJE": "Producto creado correctamente", "PRODUCTO": producto}
 
