@@ -4,3 +4,6 @@ from app.models import Admin
 class AdminRepository(BaseRepository[Admin]):
     def __init__(self, db):
         super().__init__(Admin, db)
+
+    def find_by_email(self, email: str):
+        return self.db.query(Admin).filter(Admin.email == email).first()
