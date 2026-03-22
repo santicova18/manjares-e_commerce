@@ -19,4 +19,4 @@ class Producto(Base):
 
     # Relaciones
     categoria = relationship("Categoria", back_populates="productos")
-    pedidos = relationship("Pedido", back_populates="producto")
+  
