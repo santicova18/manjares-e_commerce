@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from app.api.dependencies import  get_producto_services
 from app.services.producto_service import ProductoService
-from app.schemas.producto_schemas import ProductoCreate , ProductoUpdate
+from app.schemas.producto_schemas import ProductoCreate , ProductoUpdate, Producto
 from app.core.security import get_current_admin
 from fastapi import Depends
 
@@ -13,25 +13,36 @@ def crear_producto(producto_in: ProductoCreate, producto_service: ProductoServic
     producto= producto_service.create_producto(producto_in)
     return {"MENSAJE": "Producto creado correctamente", "PRODUCTO": producto}
 
-@router.get("/list")
+@router.get("/list",response_model=list[Producto])
 def listar_producto(producto_service: ProductoService = Depends(get_producto_services)):
     lista=producto_service.list_productos()
-    return {"lista": lista}
+    return lista
+   
 
-@router.get("/{producto_id}")
+@router.get("/{producto_id}",response_model=Producto)
 def buscar_producto(producto_id: int,producto: ProductoService = Depends(get_producto_services)):
     buscado= producto.get_producto(producto_id)
-    return {"producto": buscado}
+    return buscado
 
-@router.put("/{producto_id}")
-def actualizar_producto(producto_id:int,producto: ProductoUpdate ,productoServices: ProductoService = Depends(get_producto_services), admin: ProductoService = Depends(get_current_admin)):
+@router.put("/{producto_id}",response_model=Producto)
+def actualizar_producto(
+    producto_id:int,
+    producto: ProductoUpdate ,
+    productoServices: ProductoService = Depends(get_producto_services),
+    admin: ProductoService = Depends(get_current_admin),
+    ):
+    
     actualizado= productoServices.update_producto(producto_id,producto)
-    return{"producto": actualizado}
+    return actualizado
 
-@router.delete("/{producto_id}")
-def borrar_producto(producto_id:int , producto: ProductoService = Depends(get_producto_services), admin: ProductoService = Depends(get_current_admin )):
+@router.delete("/{producto_id}", response_model=Producto)
+def borrar_producto(
+    producto_id:int ,
+    producto: ProductoService = Depends(get_producto_services),
+     admin: ProductoService = Depends(get_current_admin ),
+     ):
     borrado= producto.delete_producto(producto_id)
-    return {"producto": borrado}
+    return borrado
 
 
 
