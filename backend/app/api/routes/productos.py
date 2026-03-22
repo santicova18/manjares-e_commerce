@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from app.api.dependencies import  get_producto_services
 from app.services.producto_service import ProductoService
-from app.schemas.producto_schemas import ProductoCreate
+from app.schemas.producto_schemas import ProductoCreate , ProductoUpdate
 from app.core.security import get_current_admin
 from fastapi import Depends
 
@@ -24,8 +24,8 @@ def buscar_producto(producto_id: int,producto: ProductoService = Depends(get_pro
     return {"producto": buscado}
 
 @router.put("/{producto_id}")
-def actualizar_producto(producto_id:int,producto: ProductoService = Depends(get_producto_services), admin: ProductoService = Depends(get_current_admin)):
-    actualizado= producto.update_producto(producto_id,producto)
+def actualizar_producto(producto_id:int,producto: ProductoUpdate ,productoServices: ProductoService = Depends(get_producto_services), admin: ProductoService = Depends(get_current_admin)):
+    actualizado= productoServices.update_producto(producto_id,producto)
     return{"producto": actualizado}
 
 @router.delete("/{producto_id}")
