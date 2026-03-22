@@ -1,9 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+
 from app.core.connection import SessionLocal
 from app.core.security import hash_password
 from app.models.admin import Admin
 from app.models.categoria import Categoria
 from app.models.producto import Producto
-
 
 def seed():
     db = SessionLocal()
