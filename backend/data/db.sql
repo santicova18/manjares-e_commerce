@@ -9,10 +9,6 @@ CREATE TABLE admin (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Admin inicial (⚠️ luego encripta en backend)
-INSERT INTO admin (nombre, email, password) VALUES
-('Administrador', 'admin@tienda.com', '123456');
-
 
 -- =========================
 -- TABLA: categorias
@@ -22,11 +18,6 @@ CREATE TABLE categorias (
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT
 );
-
-INSERT INTO categorias (nombre, descripcion) VALUES
-('Frutas', 'Productos frescos del campo'),
-('Verduras', 'Verduras orgánicas'),
-('Granos', 'Productos secos');
 
 
 -- =========================
@@ -47,12 +38,6 @@ CREATE TABLE productos (
     FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 
--- Productos con imágenes (URL)
-INSERT INTO productos (nombre, descripcion, precio, unidad_medida, stock, categoria_id, imagen_url) VALUES
-('Papa', 'Papa criolla fresca', 2000, 'kg', 50, 2, 'https://images.unsplash.com/photo-1582515073490-dc06b3fbcf6b'),
-('Manzana', 'Manzana roja importada', 3500, 'kg', 30, 1, 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce'),
-('Arroz', 'Arroz blanco premium', 1800, 'kg', 100, 3, 'https://images.unsplash.com/photo-1586201375761-83865001e31c'),
-('Tomate', 'Tomate fresco orgánico', 2500, 'kg', 40, 2, 'https://images.unsplash.com/photo-1592928302636-c83cf1c3a9bb');
 
 
 -- =========================
