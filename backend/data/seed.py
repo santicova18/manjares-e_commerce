@@ -52,7 +52,7 @@ def seed():
                     unidad_medida="kg",
                     stock=50,
                     categoria_id=verduras.id,
-                    imagen_url="https://images.unsplash.com/photo-1582515073490-dc06b3fbcf6b"
+                    imagen_url="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400"
                 ),
                 Producto(
                     nombre="Manzana",
@@ -79,7 +79,7 @@ def seed():
                     unidad_medida="kg",
                     stock=40,
                     categoria_id=verduras.id,
-                    imagen_url="https://images.unsplash.com/photo-1592928302636-c83cf1c3a9bb"
+                    imagen_url="https://images.unsplash.com/photo-1546470427-227c7369a3b2?w=400"
                 ),
             ]
             db.add_all(productos)
