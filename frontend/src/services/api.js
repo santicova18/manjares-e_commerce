@@ -1,4 +1,4 @@
-const BASE_URL = "/api"
+const BASE_URL = "https://manjares-ecommerce-production.up.railway.app/"
 
 // Helper para headers con JWT
 const authHeaders = () => ({
