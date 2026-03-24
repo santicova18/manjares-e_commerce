@@ -117,10 +117,15 @@ function AdminDashboard() {
     categoria_id: 1
   })
 
-  const token = localStorage.getItem("token")
-  if (!token) {
-    return <Navigate to="/admin" />
-  }
+const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/admin")
+      return
+    }
+    fetchData()
+  }, [])
 
   const fetchData = async () => {
     try {
@@ -139,9 +144,7 @@ function AdminDashboard() {
     }
   }
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+ 
 
   const handleLogout = () => {
     localStorage.removeItem("token")
