@@ -2,25 +2,24 @@ from fastapi import FastAPI, APIRouter
 from app.api.routes import productos, categoria, admin
 from fastapi.middleware.cors import CORSMiddleware
 
-
-
 app = FastAPI(
     title="Manjares E-commerce API",
     description="API para la tienda de manjares.",
     version="1.0.0"
 )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-          "https://manjares-e-commerce.vercel.app",
-          "https://manjares-e-commerce-q3w2hz25z-santicova18-9956s-projects.vercel.app"
-                  ], 
+        "https://manjares-e-commerce.vercel.app",
+        "https://manjares-e-commerce-q3w2hz25z-santicova18-9956s-projects.vercel.app",
+        "http://localhost:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- Routers ---
 api_v1_router = APIRouter()
 api_v1_router.include_router(admin.router, prefix="/admin", tags=["Admin"])
 api_v1_router.include_router(productos.router, prefix="/productos", tags=["Productos"])
