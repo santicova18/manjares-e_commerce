@@ -12,13 +12,11 @@ function AdminLogin() {
   const token = localStorage.getItem("token")
   if (token) {
     try {
-      // Try to decode and check if token is valid
       const payload = JSON.parse(atob(token.split('.')[1]))
       if (payload && payload.exp * 1000 > Date.now()) {
         return <Navigate to="/admin/dashboard" />
       }
     } catch (e) {
-      // Token invalid or expired, clear it
       localStorage.removeItem("token")
     }
   }
@@ -28,7 +26,7 @@ function AdminLogin() {
     setError(null)
 
     try {
-      const res = await fetch("/api/admin/login", {
+      const res = await fetch("https://manjares-ecommerce-production.up.railway.app/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
