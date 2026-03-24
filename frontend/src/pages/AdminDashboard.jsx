@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate, Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const BASE_URL = "https://manjares-ecommerce-production.up.railway.app/api"
 
@@ -21,41 +21,34 @@ const cargarCategorias = async () => {
 
 const guardarProducto = async (navigate, datos, editingId = null) => {
   const token = localStorage.getItem("token")
-
   if (!token) {
     alert("Sesión expirada. Inicia sesión de nuevo.")
     navigate("/admin")
     return
   }
-
   const url = editingId
     ? `${BASE_URL}/productos/${editingId}`
     : `${BASE_URL}/productos/`
-
   const method = editingId ? "PUT" : "POST"
-
   try {
     const res = await fetch(url, {
-      method: method,
+      method,
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(datos)
     })
-
     if (res.status === 401) {
       alert("Sesión expirada. Inicia sesión de nuevo.")
       localStorage.removeItem("token")
       navigate("/admin")
       return
     }
-
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}))
       throw new Error(errorData.detail || "Error al guardar producto")
     }
-
     return await res.json()
   } catch (err) {
     throw err
@@ -64,13 +57,11 @@ const guardarProducto = async (navigate, datos, editingId = null) => {
 
 const eliminarProducto = async (navigate, id) => {
   const token = localStorage.getItem("token")
-
   if (!token) {
     alert("Sesión expirada. Inicia sesión de nuevo.")
     navigate("/admin")
     return
   }
-
   try {
     const res = await fetch(`${BASE_URL}/productos/${id}`, {
       method: "DELETE",
@@ -79,19 +70,16 @@ const eliminarProducto = async (navigate, id) => {
         "Authorization": `Bearer ${token}`
       }
     })
-
     if (res.status === 401) {
       alert("Sesión expirada. Inicia sesión de nuevo.")
       localStorage.removeItem("token")
       navigate("/admin")
       return
     }
-
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}))
       throw new Error(errorData.detail || "Error al eliminar producto")
     }
-
     return true
   } catch (err) {
     throw err
@@ -117,9 +105,8 @@ function AdminDashboard() {
     categoria_id: 1
   })
 
-const token = localStorage.getItem("token")
-
   useEffect(() => {
+    const token = localStorage.getItem("token")
     if (!token) {
       navigate("/admin")
       return
@@ -144,8 +131,6 @@ const token = localStorage.getItem("token")
     }
   }
 
- 
-
   const handleLogout = () => {
     localStorage.removeItem("token")
     navigate("/admin")
@@ -153,7 +138,6 @@ const token = localStorage.getItem("token")
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     const productData = {
       nombre: formData.nombre,
       descripcion: formData.descripcion,
@@ -164,11 +148,8 @@ const token = localStorage.getItem("token")
       is_disponible: formData.is_disponible,
       categoria_id: parseInt(formData.categoria_id)
     }
-
     try {
-      const editingId = editingProduct ? editingProduct.id : null
-      await guardarProducto(navigate, productData, editingId)
-
+      await guardarProducto(navigate, productData, editingProduct ? editingProduct.id : null)
       setShowForm(false)
       setEditingProduct(null)
       setFormData({
@@ -224,7 +205,6 @@ const token = localStorage.getItem("token")
       is_disponible: !producto.is_disponible,
       categoria_id: producto.categoria_id
     }
-
     try {
       await guardarProducto(navigate, updateData, producto.id)
       fetchData()
@@ -288,7 +268,6 @@ const token = localStorage.getItem("token")
               <h3 className="text-2xl text-[#2c1810] font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
                 {editingProduct ? "Editar Producto" : "Nuevo Producto"}
               </h3>
-
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -300,12 +279,10 @@ const token = localStorage.getItem("token")
                     <input type="number" step="0.01" value={formData.precio} onChange={(e) => setFormData({...formData, precio: e.target.value})} required className="w-full bg-[#f2e8d9] border-2 border-[#e8c99a] rounded-2xl px-4 py-3 text-[#2c1810] focus:outline-none focus:border-[#c4874a]" />
                   </div>
                 </div>
-
                 <div>
                   <label className="text-[#8b5e3c] text-xs uppercase tracking-widest font-medium block mb-1">Descripción</label>
                   <textarea value={formData.descripcion} onChange={(e) => setFormData({...formData, descripcion: e.target.value})} rows={2} className="w-full bg-[#f2e8d9] border-2 border-[#e8c99a] rounded-2xl px-4 py-3 text-[#2c1810] focus:outline-none focus:border-[#c4874a]" />
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="text-[#8b5e3c] text-xs uppercase tracking-widest font-medium block mb-1">Unidad</label>
@@ -324,17 +301,14 @@ const token = localStorage.getItem("token")
                     </select>
                   </div>
                 </div>
-
                 <div>
                   <label className="text-[#8b5e3c] text-xs uppercase tracking-widest font-medium block mb-1">URL de Imagen</label>
                   <input type="url" value={formData.imagen_url} onChange={(e) => setFormData({...formData, imagen_url: e.target.value})} placeholder="https://..." className="w-full bg-[#f2e8d9] border-2 border-[#e8c99a] rounded-2xl px-4 py-3 text-[#2c1810] focus:outline-none focus:border-[#c4874a]" />
                 </div>
-
                 <div className="flex items-center gap-3">
                   <input type="checkbox" id="is_disponible" checked={formData.is_disponible} onChange={(e) => setFormData({...formData, is_disponible: e.target.checked})} className="w-5 h-5 accent-[#c4874a]" />
                   <label htmlFor="is_disponible" className="text-[#2c1810]">Disponible para venta</label>
                 </div>
-
                 <div className="flex gap-4 pt-4">
                   <button type="button" onClick={() => { setShowForm(false); setEditingProduct(null) }} className="flex-1 border-2 border-[#e8c99a] text-[#8b5e3c] py-3 rounded-2xl font-bold hover:bg-[#f2e8d9] transition">
                     Cancelar
@@ -409,7 +383,6 @@ const token = localStorage.getItem("token")
                 ))}
               </tbody>
             </table>
-
             {productos.length === 0 && (
               <div className="text-center py-12 text-[#8b5e3c]">
                 No hay productos disponibles. ¡Crea el primero!
