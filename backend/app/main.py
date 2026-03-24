@@ -2,9 +2,7 @@ from fastapi import FastAPI, APIRouter
 from app.api.routes import productos, categoria, admin
 from fastapi.middleware.cors import CORSMiddleware
 
-# Esto es opcional, pero útil para crear las tablas si no existen al iniciar.
-# En un entorno de producción, se usarían migraciones (ej. Alembic).
-# Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI(
     title="Manjares E-commerce API",
@@ -13,7 +11,7 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Cambia esto a los dominios permitidos en producción
+    allow_origins=["*"], 
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
