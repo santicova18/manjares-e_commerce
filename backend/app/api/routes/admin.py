@@ -9,5 +9,9 @@ router= APIRouter()
 @router.post("/login")
 def login_admin(ad:AdminLogin, services: AdminServices= Depends(get_admin_services)):
     admin= services.login(ad.email, ad.password)
-    tk= create_access_token(admin.model_dump())
+  tk = create_access_token({
+    "sub": admin.email,
+    "rol": admin.rol,
+    "nombre": admin.nombre
+})
     return {"token": tk}
