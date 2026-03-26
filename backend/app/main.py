@@ -12,9 +12,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://manjares-e-commerce.vercel.app",
-        "https://manjares-e-commerce-q3w2hz25z-santicova18-9956s-projects.vercel.app",
         "http://localhost:5173",
     ],
+    allow_origin_regex=r"https://manjares-e-commerce.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
